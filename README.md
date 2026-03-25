@@ -44,7 +44,7 @@ git push origin --tags
 
 **系统环境：**
 
-- ubuntu
+- ubuntu-24.04
 
 
 
@@ -81,24 +81,41 @@ nvm install --lts
 # 版本查询
 go version
 
+# 配置目录
+sudo su - ubuntu
+cd /;
+sudo mkdir app
+sudo chown -R ubuntu:ubuntu app/
+mkdir -p /app/packages/go-packages
+mkdir -p /app/bin
+
 # go 下载
 cd /tmp
 wget https://golang.google.cn/dl/go1.26.1.linux-amd64.tar.gz
 
 # go 安装
 tar -zxvf go1.26.1.linux-amd64.tar.gz
+mv go /app/bin/go1.26.1
+cd /app/bin/;
+ln -s go1.26.1 Go
 
 # path 配置
+vim ~/.bashrc
+
 # app env
-export APP_ROOT_PATH="${HOME}/app"
+export APP_ROOT_PATH="/app"
 export APP_BIN_PATH="${APP_ROOT_PATH}/bin"
 export PATH="${PATH}:${APP_ROOT_PATH}:${APP_BIN_PATH}"
 
 # go env
+export GOROOT=/app/bin/Go
+export GOBIN=${GOROOT}/bin
 export GOPATH=/app/packages/go-packages
 export GOMODCACHE="${GOPATH}/pkg/mod"
-export GOTOOLDIR="${GOPATH}/pkg/tool/darwin_amd64"
-export PATH="${PATH}:${GOPATH}:${GOPATH}/bin"
+export PATH="${PATH}:${GOROOT}:${GOBIN}:${GOPATH}"
+
+# 加载配置
+source ~/.bashrc
 ```
 
 
@@ -108,9 +125,12 @@ export PATH="${PATH}:${GOPATH}:${GOPATH}/bin"
 ```shell
 # 版本查询
 python3 --version
+pip3 --version
 
 # python3 安装
 
+# pip3 安装
+sudo apt install python3-pip
 ```
 
 
@@ -125,7 +145,13 @@ poetry --version
 curl -sSL https://install.python-poetry.org | python3 -
 
 # env 配置
-export PATH="$HOME/.local/bin:$PATH"
+vim ~/.bashrc
+
+# poetry env
+export PATH="${HOME}/.local/bin:$PATH"
+
+# 加载配置
+source ~/.bashrc
 ```
 
 
@@ -152,6 +178,7 @@ jq --version
 
 ```shell
 # python env，如果这里出现 SSL 证书安全错误，见错误处理章节进行错误处理
+cd /app/deploy-bsc/
 pip3 install -r requirements.txt
 ```
 
@@ -332,7 +359,7 @@ https://github.com/wulianapp/blockchain-deploy/tree/main/ether-explorer
 
 # 四、错误处理
 
-python ssl 证书安全错误
+**python ssl 证书安全错误**
 
 - 报错信息
 
@@ -348,7 +375,7 @@ Could not fetch URL https://pypi.org/simple/pip/: There was a problem confirming
 ERROR: No matching distribution found for aiohttp==3.9.1
 ```
 
-- mac 解决步骤
+- mac 环境解决
 
 ``` shell
 # 命令1
@@ -360,8 +387,46 @@ pip3 install --upgrade pip
 
 ```
 
-- linux 解决步骤
+- linux 环境解决
 
 ``` shell
+```
+
+
+
+**externally-managed-environment**
+
+- 报错信息
+
+``` shell
+pip3 install -r requirements.txt
+
+error: externally-managed-environment
+
+× This environment is externally managed
+╰─> To install Python packages system-wide, try apt install
+    python3-xyz, where xyz is the package you are trying to
+    install.
+    
+    If you wish to install a non-Debian-packaged Python package,
+    create a virtual environment using python3 -m venv path/to/venv.
+    Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
+    sure you have python3-full installed.
+    
+    If you wish to install a non-Debian packaged Python application,
+    it may be easiest to use pipx install xyz, which will manage a
+    virtual environment for you. Make sure you have pipx installed.
+    
+    See /usr/share/doc/python3.12/README.venv for more information.
+
+note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+hint: See PEP 668 for the detailed specification.
+```
+
+- linux 环境解决
+
+``` shell
+# 暂时不考虑使用 venv 环境管理，这样需要修改部署脚本，暂时使用全局安装管理
+pip3 install -r requirements.txt --break-system-packages
 ```
 
