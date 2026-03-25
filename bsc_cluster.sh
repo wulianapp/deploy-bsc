@@ -3,6 +3,7 @@
 # Exit script on error
 set -e
 
+# env
 basedir=$(
     cd $(dirname $0)
     pwd
@@ -25,8 +26,17 @@ function exit_previous() {
 }
 
 function create_validator() {
-    rm -rf ${workspace}/.local
-    mkdir -p ${workspace}/.local
+    # rm -rf ${workspace}/.local
+    # mkdir -p ${workspace}/.local
+
+    local dir_name=".local"
+    if [ ! -d "${dir_name}" ]; then
+        # create directory
+        mkdir -p "${workspace}/${dir_name}"
+    else
+        # clean old data
+        rm -rf ${workspace}/${dir_name}/*
+    fi
 
     for ((i = 0; i < size; i++)); do
         cp -r ${workspace}/keys/validator${i} ${workspace}/.local/
