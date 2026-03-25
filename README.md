@@ -120,6 +120,18 @@ source ~/.bashrc
 
 
 
+**foundry 安装** 
+
+``` shell
+# foundry 安装
+curl -L https://foundry.paradigm.xyz | bash
+
+# forge 组件安装
+foundryup
+```
+
+
+
 **Python3 安装**
 
 ```shell
@@ -344,6 +356,22 @@ curl -X POST -H "Content-Type: application/json" \
 curl -X POST -H "Content-Type: application/json" \
     --data '{"jsonrpc":"2.0","method":"eth_chainId","params":[],"id":714}' \
   http://localhost:8547
+```
+
+
+
+## 2.3 log 查看
+
+``` shell
+# 查询节点0日志
+./log.sh
+./log.sh 0
+
+# 查询节点1日志
+./log.sh 1
+
+# 查询节点2日志
+./log.sh 2
 ```
 
 
