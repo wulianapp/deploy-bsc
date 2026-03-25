@@ -4,8 +4,9 @@
 /bin/tool
 /bin/bootnode
 /create-validator/create-validator
-
-.local/
-
-.idea/
+/bsc/
+/genesis
 lib/
+.local/
+.idea/
+.env

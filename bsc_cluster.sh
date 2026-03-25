@@ -12,7 +12,8 @@ source ${workspace}/.env
 size=$((BSC_CLUSTER_SIZE))
 stateScheme="hash"
 dbEngine="leveldb"
-gcmode="full"
+#gcmode="full"
+gcmode="archive"
 sleepBeforeStart=15
 sleepAfterStart=10
 
@@ -246,7 +247,7 @@ function native_start() {
 
         cp ${workspace}/bin/geth ${datadir}/geth${i}
 
-        base=$((8545 + i*2))
+        base=$((${GETH_RPC_START_NUM} + i*2))
         start_node "node" $i $datadir "${datadir}/geth${i}" "${cons_addr}" \
             $base $base $((6060+i*2)) $((7060+i*2))
     done
@@ -257,7 +258,7 @@ function native_start() {
             datadir="${workspace}/.local/sentry${i}"
             cp ${workspace}/bin/geth ${datadir}/geth${i}
 
-            base=$((8545 + i*2))
+            base=$((${GETH_RPC_START_NUM} + i*2))
             start_node "sentry" $i $datadir "${datadir}/geth${i}" "" \
                 $((base+1)) $((base+1)) $((6060+i*2+1)) $((7060+i*2+1))
         done
@@ -295,16 +296,20 @@ reset)
     initNetwork
     native_start
     register_stakehub
+    echo "reset and start network success"
     ;;
 stop)
     exit_previous $ValidatorIdx
+    echo "stop network success"
     ;;
 start)
     native_start $ValidatorIdx
+    echo "start network success"
     ;;
 restart)
     exit_previous $ValidatorIdx
     native_start $ValidatorIdx
+    echo "restart network success"
     ;;
 *)
     echo "Usage: bsc_cluster.sh | reset | stop [vidx]| start [vidx]| restart [vidx]"
