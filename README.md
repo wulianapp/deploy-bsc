@@ -120,13 +120,13 @@ source ~/.bashrc
 
 
 
-**foundry 安装** 
+**foundry 安装**
 
 ``` shell
 # foundry 安装
 curl -L https://foundry.paradigm.xyz | bash
 
-# forge 组件安装
+# 初始化安装 forge，cast，anvil，chisel，程序运行依赖组件为 forge
 foundryup
 ```
 
