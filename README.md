@@ -62,6 +62,22 @@ nvm install --lts
 
 **go 安装**
 
+ubuntu 系统，可以使用 apt 管理器安装
+
+只是用于编译运行依赖工具，无其他用途，能装上即可
+
+- apt 安装
+
+```shell
+# 版本查询，如果出错，会给出安装提示命令，根据命令执行安装即可
+go version
+
+# go 安装
+sudo apt install golang-go
+```
+
+- 预编译二进制安装
+
 ```shell
 # 版本查询
 go version
